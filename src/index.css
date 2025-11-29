@@ -1,0 +1,112 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+@import './styles/select_styles.css';
+@import './styles/navbarClient.css';
+@import "tailwindcss";
+@import "tw-animate-css";
+@import './styles/navbarAdmin.css';
+
+/* --- Custom Dark Variant --- */
+@custom-variant dark (&:is(.dark *));
+
+/* --- Root Variables --- */
+:root {
+  --background: 0 0% 100%;
+  --foreground: 240 10% 15%;
+
+  --card: 0 0% 100%;
+  --card-foreground: 240 10% 15%;
+
+  --popover: 0 0% 100%;
+  --popover-foreground: 240 10% 15%;
+
+  --primary: 320 85% 55%;
+  --primary-foreground: 0 0% 100%;
+
+  --secondary: 270 70% 60%;
+  --secondary-foreground: 0 0% 100%;
+
+  --muted: 240 10% 95%;
+  --muted-foreground: 240 5% 45%;
+
+  --accent: 25 95% 60%;
+  --accent-foreground: 0 0% 100%;
+
+  --destructive: 0 84% 60%;
+  --destructive-foreground: 0 0% 100%;
+
+  --border: 240 10% 90%;
+  --input: 240 10% 90%;
+  --ring: 320 85% 55%;
+  --radius: 0.75rem;
+
+  --gradient-primary: linear-gradient(135deg, hsl(320 85% 55%), hsl(270 70% 60%));
+  --gradient-hero: linear-gradient(135deg, hsl(320 85% 55%) 0%, hsl(270 70% 60%) 50%, hsl(25 95% 60%) 100%);
+  --shadow-vibrant: 0 10px 40px -10px hsl(320 85% 55% / 0.4);
+  --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+
+  --sidebar-background: 0 0% 98%;
+  --sidebar-foreground: 240 5.3% 26.1%;
+  --sidebar-primary: 240 5.9% 10%;
+  --sidebar-primary-foreground: 0 0% 98%;
+  --sidebar-accent: 240 4.8% 95.9%;
+  --sidebar-accent-foreground: 240 5.9% 10%;
+  --sidebar-border: 220 13% 91%;
+  --sidebar-ring: 217.2 91.2% 59.8%;
+}
+
+/* --- Dark Mode Variables --- */
+.dark {
+  --background: 240 10% 10%;
+  --foreground: 0 0% 98%;
+
+  --card: 240 10% 12%;
+  --card-foreground: 0 0% 98%;
+
+  --popover: 240 10% 12%;
+  --popover-foreground: 0 0% 98%;
+
+  --primary: 320 85% 55%;
+  --primary-foreground: 0 0% 100%;
+
+  --secondary: 270 70% 60%;
+  --secondary-foreground: 0 0% 100%;
+
+  --muted: 240 10% 15%;
+  --muted-foreground: 240 5% 65%;
+
+  --accent: 25 95% 60%;
+  --accent-foreground: 0 0% 100%;
+
+  --destructive: 0 84% 60%;
+  --destructive-foreground: 0 0% 100%;
+
+  --border: 240 10% 20%;
+  --input: 240 10% 20%;
+  --ring: 320 85% 55%;
+
+  --sidebar-background: 240 5.9% 10%;
+  --sidebar-foreground: 240 4.8% 95.9%;
+  --sidebar-primary: 224.3 76.3% 48%;
+  --sidebar-primary-foreground: 0 0% 100%;
+  --sidebar-accent: 240 3.7% 15.9%;
+  --sidebar-accent-foreground: 240 4.8% 95.9%;
+  --sidebar-border: 240 3.7% 15.9%;
+  --sidebar-ring: 217.2 91.2% 59.8%;
+}
+
+/* --- Base Element Styles con Tailwind Arbitrary Values --- */
+@layer base {
+  /* ❌ Ya no aplicamos border/outline al body */
+  body {
+    @apply bg-[hsl(var(--background))] text-[hsl(var(--foreground))];
+  }
+
+  /* ✔ Aplicamos SOLO border a inputs, selects, textareas */
+  button, input, select, textarea {
+    border: 1px solid hsl(var(--border));  /* mantiene borde normal */
+    outline: none;                         /* elimina borde rosado */
+    border-radius: var(--radius);
+  }
+}

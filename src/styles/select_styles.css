@@ -1,0 +1,77 @@
+.custome-select{
+    outline: none;
+    border-color: rgb(1, 1, 1); /*para indicar el color de los bordes*/
+    border-radius: 4px; /*para hacer que las esquinas sean redondas, entre mayor sea el número, más redondo el borde*/
+    width: 100%; /*para indicar el ancho del elemento, 100% significa que usara el 100% del ancho disponible*/
+    padding: 0.3rem; /*para indicar el espaciado interno del elemento, no confundir con margin que es el espaciado externo*/
+
+    /*
+    
+    Padding;
+
+    -------------------------------
+    |               ^             |
+    |               |             |
+    |               v             |
+    | <---------> texto <---------> 
+    |               ^             |
+    |               |             |
+    |               |             |
+    |               v             |
+    -------------------------------
+    
+
+    Margin:
+
+                               ^             
+                               |             
+                               v               
+                 -------------------------------
+                |                             |
+                |                             |
+                |                             |
+    <---------> |             texto           | <---------> 
+                |                             |
+                |                             |
+                |                             |
+                |                             |
+                -------------------------------
+                               ^             
+                               |             
+                               v
+    */
+}
+
+.custome-select:focus{
+    border-color: blue;
+    box-shadow: 0 0 2px 0px rgba(0, 0, 255, 0.5) !important; /* Pra agregar el efecto de sombreado, inset significa adentro, si se omite asume que es outset, o sea, que se aplica afuera, luego viene cantidad de pizeles en vertical y horizontal,*/
+    border-radius: 4px;
+    padding: 0.3rem;
+}
+
+.add-cart-button{
+    cursor: pointer;
+}
+
+.add-cart-button:hover{
+    cursor: pointer;
+    background-color: blue;
+    color: white;
+}
+.add-cart-button2:hover{
+    cursor: pointer;
+    background-color: rgb(190, 190, 207);
+    color: white;
+}
+.drop-down{
+    cursor: pointer;
+    background-color: rgb(221, 207, 221);
+}
+
+.drop-down-select:hover{
+    cursor: pointer;
+    background-color: rgb(151, 98, 168);
+}
+.focus{
+    cursor: pointer;
+}
