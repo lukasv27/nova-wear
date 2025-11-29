@@ -18,24 +18,16 @@ const Hero = () => {
       {/* Content */}
       <div className="container mx-auto px-4 relative z-10">
         <div className="max-w-2xl">
-          <h1 className="text-5xl md:text-7xl font-bold mb-6 leading-tight">
+          <h1 className="text-5xl md:text-7xl font-bold mb-6 leading-tight text-white">
             Tu Estilo,{" "}
             <span className="bg-gradient-to-r from-vibrant-pink via-vibrant-purple to-vibrant-orange bg-clip-text text-transparent">
               Tu Vibra
             </span>
           </h1>
-          <p className="text-xl md:text-2xl text-muted-foreground mb-8 max-w-xl">
-            Descubre la moda juvenil más fresca y atrevida. Expresa tu personalidad única con nuestras colecciones vibrantes.
+          <p className="text-xl md:text-2xl text-muted-foreground mb-8 max-w-xl text-white">
+            Descubre la moda juvenil más fresca y atrevida. Expresa tu
+            personalidad única con nuestras colecciones vibrantes.
           </p>
-          <div className="flex flex-col sm:flex-row gap-4">
-            <Button variant="hero" size="lg" className="text-lg">
-              Explorar Colección
-              <ArrowRight className="ml-2 h-5 w-5" />
-            </Button>
-            <Button variant="outline" size="lg" className="text-lg">
-              Ver Ofertas
-            </Button>
-          </div>
         </div>
       </div>
     </section>
