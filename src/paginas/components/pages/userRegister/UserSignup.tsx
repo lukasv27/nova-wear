@@ -14,7 +14,7 @@ import { registro } from "@/api/service/AuthService";
 import { toast } from "sonner";
 import { useState } from "react";
 
-const UserRegister = () => {
+export const UserRegister = () => {
   const form = useForm<RegistroDTO>({
     defaultValues: {
       nombre: "",

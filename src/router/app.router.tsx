@@ -18,16 +18,20 @@ import AuthLayout from "@/paginas/components/layouts/AuthLayout";
 export const router = createBrowserRouter([
   {
     path: "/",
-    element: <PublicLayout />,  // Layout público con Navbar
+    element: <PublicLayout />, // Layout público con Navbar
     children: [
-      { index: true, element: <LoginPage /> },  // Ruta "/"
+      { index: true, element: <LoginPage /> }, // Ruta "/"
       { path: "home", element: <HomePage /> },
-      { path: "login", element: <LoginPage />, children: [{ index: true, element: <LoginForm /> }] },
+      {
+        path: "login",
+        element: <LoginPage />,
+        children: [{ index: true, element: <LoginForm /> }],
+      },
       { path: "registro", element: <UserRegister /> },
       { path: "productos", element: <ProductsPage /> },
       { path: "category/:categoryName", element: <CategoryPage /> },
       { path: "shoppingcart", element: <ShoppingCartPage /> },
-      { path: "/historial de compra",element: <PurchareHistory/>},
+      { path: "/historial de compra", element: <PurchareHistory /> },
     ],
   },
   {
@@ -38,14 +42,13 @@ export const router = createBrowserRouter([
       { path: "productos", element: <AdminProductsPage /> },
     ],
   },
-  
+
   {
     path: "/auth", // ruta padre para login/registro sin Navbar
-    element: <AuthLayout/>,
+    element: <AuthLayout />,
     children: [
       { path: "login", element: <LoginPage /> },
       { path: "registro", element: <UserRegister /> },
     ],
   },
 ]);
-  
