@@ -1,48 +1,61 @@
-import { useParams, useNavigate } from "react-router-dom";
+// src/pages/CategoryPage.tsx
 import { useEffect, useState } from "react";
-import { getAllProducts } from "@/api/service/ProductService";
-import Navbar from "../../NavBar";
-import { ShoppingCart } from "lucide-react";
+import { useParams } from "react-router";
+import { useCart } from "../../CartProvider";
+import {
+  getPublicProductsByCategory,
+  getAllProducts,
+  type Product,
+} from "@/api/service/ProductService";
 import { Button } from "@/components/ui/button";
-import { useCart } from "@/paginas/components/CartProvider"; // ✅ Importa tu context
+import { ShoppingCart } from "lucide-react";
 
-interface Product {
-  id: number;
-  name: string;
-  price: string;
-  category: string;
-  size: string;
-  imageBase64: string;
+interface Props {
+  isAdmin?: boolean; // ✅ opción para indicar si es admin
 }
 
-export default function CategoryPage() {
+export default function CategoryPage({ isAdmin = false }: Props) {
   const { categoryName } = useParams<{ categoryName: string }>();
   const [products, setProducts] = useState<Product[]>([]);
-  const sizes = ["S", "M", "L", "XL"];
   const [selectedSizes, setSelectedSizes] = useState<{ [key: number]: string }>(
     {}
   );
-
-  const { addToCart } = useCart(); // ✅ Obtener función para agregar al carrito
-  const navigate = useNavigate(); // para navegar al carrito si quieres
+  const { addToCart } = useCart();
 
   useEffect(() => {
     const loadProducts = async () => {
-      const res = await getAllProducts();
-      const filtered = res.data.filter(
-        (p: Product) => p.category.toLowerCase() === categoryName?.toLowerCase()
-      );
-      setProducts(filtered);
+      try {
+        let res: Product[] = [];
 
-      // Inicializar tallas por defecto
-      const initialSizes: { [key: number]: string } = {};
-      filtered.forEach((p) => {
-        initialSizes[p.id] = p.size;
-      });
-      setSelectedSizes(initialSizes);
+        if (isAdmin) {
+          // Admin ve todos los productos y filtramos por categoría
+          res = await getAllProducts();
+          if (categoryName) {
+            res = res.filter(
+              (p) => p.category.toLowerCase() === categoryName.toLowerCase()
+            );
+          }
+        } else {
+          // Cliente usa la ruta pública
+          if (!categoryName) return;
+          res = await getPublicProductsByCategory(categoryName);
+        }
+
+        setProducts(res);
+
+        // Inicializar la talla seleccionada con la primera disponible
+        const initialSizes: { [key: number]: string } = {};
+        res.forEach((p) => {
+          initialSizes[p.id] = p.sizes[0] || "";
+        });
+        setSelectedSizes(initialSizes);
+      } catch (error) {
+        console.error("Error cargando productos por categoría:", error);
+      }
     };
+
     loadProducts();
-  }, [categoryName]);
+  }, [categoryName, isAdmin]);
 
   const handleSizeChange = (productId: number, size: string) => {
     setSelectedSizes((prev) => ({ ...prev, [productId]: size }));
@@ -54,58 +67,56 @@ export default function CategoryPage() {
       name: product.name,
       price: product.price,
       imageBase64: product.imageBase64,
-      size: selectedSizes[product.id] || product.size,
+      size: selectedSizes[product.id],
       quantity: 1,
     });
-
-    console.log(
-      `Agregado al carrito: ${product.name}, talla: ${
-        selectedSizes[product.id] || product.size
-      }`
-    );
   };
 
   return (
     <div className="p-10">
-      <h1 className="text-3xl font-bold mb-6">{categoryName}</h1>
+      <h1 className="text-3xl font-bold mb-6">
+        {categoryName || "Todos los productos"}
+      </h1>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        {products.length === 0 && (
+          <p className="col-span-full text-center text-gray-500">
+            No hay productos en esta categoría.
+          </p>
+        )}
+
         {products.map((p) => (
-          <div key={p.id} className="border rounded p-4">
+          <div key={p.id} className="border rounded p-4 flex flex-col">
             <img
               src={p.imageBase64}
               alt={p.name}
               className="w-full h-48 object-cover mb-2"
             />
-            <h3 className="font-bold">Marca: {p.name}</h3>
+            <h3 className="font-bold">{p.name}</h3>
             <p>Precio: ${p.price}</p>
 
-            {/* Dropdown de tallas */}
-            <label className="mr-2 font-medium">Selecciona talla:</label>
+            <label className="mr-2 font-medium mt-2">Selecciona talla:</label>
             <select
-              value={selectedSizes[p.id] || p.size}
+              value={selectedSizes[p.id]}
               onChange={(e) => handleSizeChange(p.id, e.target.value)}
-              className="custome-select"
+              className="custome-select mb-4"
             >
-              {sizes.map((size) => (
+              {p.sizes.map((size) => (
                 <option key={size} value={size}>
                   {size}
                 </option>
               ))}
             </select>
 
-            {/* Botón Comprar */}
             <Button
               onClick={() => handleAddToCart(p)}
-              className="mt-5 border p-1 rounded w-full"
+              className="mt-auto flex items-center justify-center gap-2"
             >
-              <ShoppingCart className="mr-2" />
-              Agregar a carrito
+              <ShoppingCart />
+              Agregar al carrito
             </Button>
           </div>
         ))}
-
-        {products.length === 0 && <p>No hay productos en esta categoría.</p>}
       </div>
     </div>
   );

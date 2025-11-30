@@ -2,7 +2,7 @@ import heroImage from "@/assets/hero-fashion.jpg";
 
 const Hero = () => {
   return (
-    <section className="relative min-h-[600px] md:min-h-[700px] flex items-center overflow-hidden">
+    <section className="relative min-h-[600px] md:min-h-[700px] flex items-center ">
       {/* Background Image */}
       <div className="absolute inset-0 z-0">
         <img

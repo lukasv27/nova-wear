@@ -44,7 +44,7 @@ export const UserRegister = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-200">
+    <div className="min-h-screen w-full flex items-center justify-center bg-gray-1000">
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}

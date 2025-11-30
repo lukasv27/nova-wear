@@ -1,12 +1,11 @@
-
 import { Outlet } from "react-router-dom";
 
-const AuthLayout = () => {
+export default function AuthLayout() {
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-200">
-      <Outlet /> {/* Aquí se renderizarán LoginPage y UserRegister */}
+    <div className="min-h-screen flex flex-col justify-center items-center bg-gray-100">
+      <main className="flex-1 w-full max-w-md">
+        <Outlet /> {/* Aquí se renderiza login o registro */}
+      </main>
     </div>
   );
-};
-
-export default AuthLayout;
+}

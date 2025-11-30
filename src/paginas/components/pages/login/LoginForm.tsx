@@ -57,13 +57,13 @@ const LoginForm = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-200">
+    <div className="min-h-screen w-full flex items-center justify-center bg-gray-1000">
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
           className="w-full max-w-md bg-white rounded-lg shadow-md p-6 space-y-4 
              transition-transform transition-shadow duration-300 ease-in-out 
-             hover:shadow-lg hover:scale-[1.01] animate-fadeSlideUp"
+             hover:shadow-lg hover:scale-[1.01] animate-fadeSlideUp  "
         >
           <FormField
             control={form.control}

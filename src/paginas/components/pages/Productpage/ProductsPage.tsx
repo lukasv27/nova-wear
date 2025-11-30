@@ -1,38 +1,24 @@
 import { useEffect, useState } from "react";
-import { useParams, Outlet } from "react-router";
-import axios from "axios";
-import Navbar from "../../NavBar";
-
+import { useParams } from "react-router-dom";
+import {
+  getPublicProducts,
+  getPublicProductsByCategory,
+} from "@/api/service/ProductService";
 import ProductCard from "../../ProductCard";
-
-interface Product {
-  id: number;
-  name: string;
-  price: string;
-  category: string;
-  size: string;
-  imageBase64: string;
-}
-
+import type { Product } from "@/api/service/ProductService";
 export default function ProductsPage() {
-  const { categoryName } = useParams();
+  const { categoryName } = useParams<{ categoryName: string }>();
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
 
-  // Cargar productos desde el backend
   useEffect(() => {
     const fetchProducts = async () => {
+      setLoading(true);
       try {
-        const response = await axios.get<Product[]>(
-          "http://localhost:8080/products"
-        );
-        setProducts(response.data);
-
-        // Inicializar talla seleccionada por defecto
-        const initialSizes: { [key: number]: string } = {};
-        response.data.forEach((p) => {
-          initialSizes[p.id] = p.size || "S";
-        });
+        const data = categoryName
+          ? await getPublicProductsByCategory(categoryName)
+          : await getPublicProducts();
+        setProducts(data);
       } catch (error) {
         console.error("Error al cargar los productos:", error);
       } finally {
@@ -40,23 +26,19 @@ export default function ProductsPage() {
       }
     };
     fetchProducts();
-  }, []);
-
-  const filteredProducts = categoryName
-    ? products.filter((p) => p.category === categoryName)
-    : products;
+  }, [categoryName]);
 
   if (loading) return <p className="p-10">Cargando productos...</p>;
 
   return (
-    <div>
-      <h1 className="tborder p-4 rounded-lg shadow hover:shadow-lg transition flex flex-col">
+    <div className="p-10">
+      <h1 className="tborder p-4 rounded-lg shadow hover:shadow-lg transition flex flex-col mb-6">
         Categoría: {categoryName || "Todos los productos"}
       </h1>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-        {filteredProducts.length > 0 ? (
-          filteredProducts.map((p) => (
+        {products.length > 0 ? (
+          products.map((p) => (
             <ProductCard
               key={p.id}
               id={p.id}
@@ -64,11 +46,13 @@ export default function ProductsPage() {
               name={p.name}
               price={p.price}
               category={p.category}
-              size={p.size}
+              sizes={p.sizes}
             />
           ))
         ) : (
-          <p>No hay productos en esta categoría.</p>
+          <p className="text-gray-500 col-span-full text-center">
+            No hay productos en esta categoría.
+          </p>
         )}
       </div>
     </div>

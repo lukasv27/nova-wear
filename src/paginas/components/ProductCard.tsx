@@ -12,7 +12,7 @@ interface ProductCardProps {
   name: string;
   price: string;
   category: string;
-  size: string; // talla inicial
+  sizes: string[];
 }
 
 const ProductCard = ({
@@ -21,10 +21,11 @@ const ProductCard = ({
   name,
   price,
   category,
-  size,
+  sizes = [],
 }: ProductCardProps) => {
+  const [selectedSize, setSelectedSize] = useState(sizes[0] || "");
+
   const [isFavorite, setIsFavorite] = useState(false);
-  const [selectedSize, setSelectedSize] = useState(size);
 
   const { addToCart } = useCart();
   const { token } = useAuth(); // ✅ verificamos si hay sesión
@@ -60,11 +61,11 @@ const ProductCard = ({
 
       <label className="mt-2 font-medium mr-2">Talla:</label>
       <select
+        className="size-select"
         value={selectedSize}
         onChange={(e) => setSelectedSize(e.target.value)}
-        className="custome-select mb-4"
       >
-        {["S", "M", "L", "XL"].map((s) => (
+        {sizes.map((s) => (
           <option key={s} value={s}>
             {s}
           </option>
@@ -77,7 +78,7 @@ const ProductCard = ({
         </Button>
         <Button
           onClick={handleAddToCart}
-          className="add-cart-button flex items-center gap-2"
+          className="add-cart-button flex items-center gap-2 border-black"
         >
           <ShoppingCart />
           Agregar

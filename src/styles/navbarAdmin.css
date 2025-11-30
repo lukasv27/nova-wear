@@ -1,4 +1,9 @@
 .navbar-admin-color {
-    background-color: rgb(87, 156, 158);
-    color: black;
+  background-color: rgb(87, 156, 158);
+  color: black;
+  border: none;
+}
+.navbar-select:hover {
+  cursor: pointer;
+  background-color: rgb(48, 133, 136);
 }

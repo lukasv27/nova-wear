@@ -3,18 +3,24 @@ import { useState, useEffect } from "react";
 import ProductForm from "../../ProductForm";
 import ProductTable from "../../ProductTable";
 import type { Product } from "@/api/service/ProductService";
-import { createProduct, getAllProducts, deleteProduct, updateProduct } from "@/api/service/ProductService";
+import {
+  createProduct,
+  getAllProducts,
+  deleteProduct,
+  updateProduct,
+} from "@/api/service/ProductService";
 
 export default function AddProductPage() {
   const [products, setProducts] = useState<Product[]>([]);
   const [editingProduct, setEditingProduct] = useState<Product | null>(null);
   const [loading, setLoading] = useState(false);
 
+  // Cargar todos los productos
   const loadProducts = async () => {
     setLoading(true);
     try {
-      const res = await getAllProducts();
-      setProducts(res.data);
+      const data = await getAllProducts(); // ✅ usando JWT
+      setProducts(data);
     } catch (err) {
       console.error("Error cargando productos:", err);
       alert("No se pudieron cargar los productos");
@@ -37,7 +43,7 @@ export default function AddProductPage() {
         alert("Producto agregado 🎉");
       }
       setEditingProduct(null);
-      await loadProducts();
+      await loadProducts(); // refresca la tabla
     } catch (err) {
       console.error("Error al guardar producto:", err);
       alert("No se pudo guardar el producto");
@@ -49,7 +55,7 @@ export default function AddProductPage() {
     try {
       await deleteProduct(id);
       alert("Producto eliminado ✅");
-      await loadProducts();
+      await loadProducts(); // refresca la tabla
     } catch (err) {
       console.error("Error eliminando producto:", err);
       alert("No se pudo eliminar el producto");

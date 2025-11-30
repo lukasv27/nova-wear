@@ -56,7 +56,7 @@ export default function Navbar() {
           </div>
 
           {/* Actions */}
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-4 ">
             {/* Dropdown del usuario */}
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
@@ -69,7 +69,7 @@ export default function Navbar() {
                 </Button>
               </DropdownMenuTrigger>
 
-              <DropdownMenuContent className="drop-down w-48 mr-3">
+              <DropdownMenuContent className="drop-down w-48 mr-3 absolute z-50">
                 <DropdownMenuItem
                   className="drop-down-select"
                   onClick={() => navigate("/login")}
