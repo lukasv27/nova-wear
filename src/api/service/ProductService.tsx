@@ -1,7 +1,4 @@
 import axios from "axios";
-import api from "../axios";
-
-const API_URL = "http://localhost:8080/admin/products";
 
 export interface Product {
   id: number;
@@ -12,31 +9,23 @@ export interface Product {
   imageBase64: string;
 }
 
-// Obtener todos
-export async function getAllProducts() {
-  return await api.get<Product[]>(API_URL);
-}
+const API_URL = "http://localhost:8080/admin/products";
 
-// Obtener por ID
-export async function getProductById(id: number) {
-  return await api.get<Product>(`${API_URL}/${id}`);
-}
+const getToken = () => localStorage.getItem("jwt");
 
-// Crear
-export async function createProduct(formData: FormData) {
-  return await api.post(API_URL, formData, {
-    headers: { "Content-Type": "multipart/form-data" },
-  });
-}
+const getConfig = (isMultipart = false) => ({
+  headers: {
+    "Content-Type": isMultipart ? "multipart/form-data" : "application/json",
+    Authorization: `Bearer ${getToken()}`,
+  },
+});
 
-// Actualizar
-export async function updateProduct(id: number, formData: FormData) {
-  return await api.put(`${API_URL}/${id}`, formData, {
-    headers: { "Content-Type": "multipart/form-data" },
-  });
-}
-
-// Eliminar
-export async function deleteProduct(id: number) {
-  return await api.delete(`${API_URL}/${id}`);
-}
+// CRUD
+export const getAllProducts = async () =>
+  axios.get<Product[]>(API_URL, getConfig());
+export const createProduct = async (formData: FormData) =>
+  axios.post(API_URL, formData, getConfig(true));
+export const updateProduct = async (id: number, formData: FormData) =>
+  axios.put(`${API_URL}/${id}`, formData, getConfig(true));
+export const deleteProduct = async (id: number) =>
+  axios.delete(`${API_URL}/${id}`, getConfig());

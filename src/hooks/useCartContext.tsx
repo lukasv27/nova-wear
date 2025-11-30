@@ -5,17 +5,19 @@ export interface CartItem {
   name: string;
   price: string;
   size: string;
-  imageBase64?: string;
   quantity: number;
+  imageBase64: string;
 }
 
 export interface CartContextType {
   cart: CartItem[];
+  clearCart: () => void;
   addToCart: (item: CartItem) => void;
   removeFromCart: (productId: number, size: string) => void;
   updateQuantity: (productId: number, size: string, qty: number) => void;
-  
   total: number;
 }
 
-export const CartContext = createContext<CartContextType | undefined>(undefined);
+export const CartContext = createContext<CartContextType | undefined>(
+  undefined
+);

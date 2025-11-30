@@ -19,13 +19,13 @@ export default function ProductsPage() {
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
 
-
-
   // Cargar productos desde el backend
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const response = await axios.get<Product[]>("http://localhost:8080/products");
+        const response = await axios.get<Product[]>(
+          "http://localhost:8080/products"
+        );
         setProducts(response.data);
 
         // Inicializar talla seleccionada por defecto
@@ -33,7 +33,6 @@ export default function ProductsPage() {
         response.data.forEach((p) => {
           initialSizes[p.id] = p.size || "S";
         });
-        
       } catch (error) {
         console.error("Error al cargar los productos:", error);
       } finally {
@@ -47,15 +46,10 @@ export default function ProductsPage() {
     ? products.filter((p) => p.category === categoryName)
     : products;
 
- 
-
   if (loading) return <p className="p-10">Cargando productos...</p>;
 
   return (
     <div>
-      
-      <Outlet />
-
       <h1 className="tborder p-4 rounded-lg shadow hover:shadow-lg transition flex flex-col">
         Categoría: {categoryName || "Todos los productos"}
       </h1>
@@ -71,7 +65,6 @@ export default function ProductsPage() {
               price={p.price}
               category={p.category}
               size={p.size}
-              
             />
           ))
         ) : (

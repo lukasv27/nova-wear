@@ -26,7 +26,7 @@ export default function CartItems() {
             <div>
               <h3 className="font-semibold text-lg">{item.name}</h3>
               <p className="text-sm text-gray-500">Talla: {item.size}</p>
-              <p className="text-lg font-bold mt-2">${item.price}</p>
+              <p className="text-lg font-bold mt-2">{item.price}</p>
             </div>
 
             {/* Controles */}

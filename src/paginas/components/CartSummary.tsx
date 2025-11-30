@@ -2,14 +2,21 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { useCart } from "./CartProvider";
 import ThankYouMessage from "./ThankYouMessage";
+const formattedPrice = (price: number) =>
+  new Intl.NumberFormat("es-CL", {
+    style: "currency",
+    currency: "CLP",
+  }).format(price);
 
 export default function CartSummary() {
   const { total } = useCart();
 
   const [showMessage, setShowMessage] = useState(false);
+
   const handlePurchase = () => {
     // Aquí luego conectarás el backend para guardar la compra
     console.log("Compra realizada!");
+
     setShowMessage(true);
 
     // Si quieres que se cierre solo:
@@ -23,7 +30,7 @@ export default function CartSummary() {
 
         <div className="flex justify-between mb-2">
           <span className="text-gray-500">Subtotal</span>
-          <span className="font-semibold">${total.toFixed(2)}</span>
+          <span className="font-semibold">{formattedPrice(total)}</span>
         </div>
 
         <div className="flex justify-between mb-4">
@@ -35,7 +42,7 @@ export default function CartSummary() {
 
         <div className="flex justify-between text-lg font-bold mb-6">
           <span>Total</span>
-          <span>${total.toFixed(2)}</span>
+          <span>{formattedPrice(total)}</span>
         </div>
 
         {/* BOTÓN QUE DISPARA LA ANIMACIÓN */}

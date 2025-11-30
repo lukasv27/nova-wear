@@ -1,4 +1,4 @@
-import { ShoppingBag, Menu, User } from "lucide-react";
+import { ShoppingBag, User } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -10,7 +10,10 @@ import {
   DropdownMenuItem,
 } from "@/components/ui/dropdown-menu";
 
-const Navbar = () => {
+import { useLogout } from "@/hooks/useAuth";
+
+export default function Navbar() {
+  const handleLogout = useLogout();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const navigate = useNavigate();
 
@@ -18,7 +21,6 @@ const Navbar = () => {
     <nav className="navbar-client">
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-16">
-
           {/* Logo */}
           <div className="flex items-center gap-2">
             <div className="text-2xl font-bold bg-gradient-to-r from-vibrant-pink via-vibrant-purple to-vibrant-orange bg-clip-text text-black">
@@ -28,40 +30,56 @@ const Navbar = () => {
 
           {/* Desktop Navigation */}
           <div className="flex items-center gap-6">
-            <Button variant="link" className="drop-down-select border-0" onClick={() => navigate("/home")}>
+            <Button
+              variant="link"
+              className="drop-down-select border-0"
+              onClick={() => navigate("/home")}
+            >
               Inicio
             </Button>
 
-            <Button variant="link" className="drop-down-select border-0" onClick={() => navigate("/productos")}>
+            <Button
+              variant="link"
+              className="drop-down-select border-0"
+              onClick={() => navigate("/productos")}
+            >
               Productos
             </Button>
 
-            <Button variant="link" className="drop-down-select border-0" onClick={() => navigate("/historial de compra")}>
+            <Button
+              variant="link"
+              className="drop-down-select border-0"
+              onClick={() => navigate("/historial")}
+            >
               Historial de compra
             </Button>
           </div>
 
           {/* Actions */}
           <div className="flex items-center gap-4">
-
             {/* Dropdown del usuario */}
-            <DropdownMenu >
+            <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <Button variant="ghost" size="icon" className="icon_navbar drop-down-select">
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className="icon_navbar drop-down-select"
+                >
                   <User className="h-5 w-5" />
                 </Button>
               </DropdownMenuTrigger>
 
               <DropdownMenuContent className="drop-down w-48 mr-3">
-                
-
-                <DropdownMenuItem className ="drop-down-select"onClick={() => navigate("/login")}>
-                  Iniciar sesion
+                <DropdownMenuItem
+                  className="drop-down-select"
+                  onClick={() => navigate("/login")}
+                >
+                  Iniciar sesión
                 </DropdownMenuItem>
 
                 <DropdownMenuItem
-                  className="drop-down-select "
-                  onClick={() => console.log("Cerrar sesión")}
+                  className="drop-down-select"
+                  onClick={handleLogout}
                 >
                   Cerrar sesión
                 </DropdownMenuItem>
@@ -69,7 +87,10 @@ const Navbar = () => {
             </DropdownMenu>
 
             {/* Carrito */}
-            <Button className="icon_navbar drop-down-select" variant="ghost" size="icon"
+            <Button
+              className="icon_navbar drop-down-select"
+              variant="ghost"
+              size="icon"
               onClick={() => navigate("/shoppingcart")}
             >
               <ShoppingBag className="h-5 w-5" />
@@ -79,6 +100,4 @@ const Navbar = () => {
       </div>
     </nav>
   );
-};
-
-export default Navbar;
+}

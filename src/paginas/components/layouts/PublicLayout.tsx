@@ -1,17 +1,15 @@
-// src/paginas/components/layouts/PublicLayout.tsx
 import { Outlet } from "react-router-dom";
-import Navbar from "../NavBar"; // Asegúrate de que esta ruta sea correcta
+import Navbar from "../NavBar";
+import Footer from "../Footer";
 
 export default function PublicLayout() {
   return (
     <div className="min-h-screen flex flex-col">
-      {/* Navbar único */}
-     
-
-      {/* Contenido de cada página */}
+      <Navbar />
       <main className="flex-1">
         <Outlet />
       </main>
+      <Footer />
     </div>
   );
 }

@@ -1,26 +1,26 @@
 import AdminLayout from "@/paginas/components/layouts/AdminLayout";
-import PublicLayout from "@/paginas/components/layouts/PublicLayuot"; // Asegúrate de tener este layout con Navbar
-import LoginForm from "@/paginas/components/pages/login/LoginForm";
-import AdminProductsPage from "@/paginas/components/pages/addproductspage/AddProductsPage";
+import PublicLayout from "@/paginas/components/layouts/PublicLayout"; // Layout público con Navbar
+import AuthLayout from "@/paginas/components/layouts/AuthLayout";
 
-import HomePage from "@/paginas/components/pages/homepage/HomePage";
 import LoginPage from "@/paginas/components/pages/login/LoginPage";
-import CategoryPage from "@/paginas/components/pages/Productpage/CategoryPage";
-import ProductsPage from "@/paginas/components/pages/Productpage/ProductsPage";
+import LoginForm from "@/paginas/components/pages/login/LoginForm";
 import UserRegister from "@/paginas/components/pages/userRegister/UserSignup";
-
-import { createBrowserRouter } from "react-router";
-
+import HomePage from "@/paginas/components/pages/homepage/HomePage";
+import ProductsPage from "@/paginas/components/pages/Productpage/ProductsPage";
+import CategoryPage from "@/paginas/components/pages/Productpage/CategoryPage";
 import ShoppingCartPage from "@/paginas/components/pages/shoppingcart/ShoppingCartPage";
 import PurchareHistory from "@/paginas/components/pages/purcharehistorypage/PurchareHistory";
-import AuthLayout from "@/paginas/components/layouts/AuthLayout";
+import AdminProductsPage from "@/paginas/components/pages/addproductspage/AddProductsPage";
+
+import { createBrowserRouter } from "react-router";
+import PrivateRoute from "@/paginas/components/PrivateRoute";
 
 export const router = createBrowserRouter([
   {
     path: "/",
-    element: <PublicLayout />, // Layout público con Navbar
+    element: <PublicLayout />,
     children: [
-      { index: true, element: <LoginPage /> }, // Ruta "/"
+      { index: true, element: <LoginPage /> },
       { path: "home", element: <HomePage /> },
       {
         path: "login",
@@ -30,13 +30,28 @@ export const router = createBrowserRouter([
       { path: "registro", element: <UserRegister /> },
       { path: "productos", element: <ProductsPage /> },
       { path: "category/:categoryName", element: <CategoryPage /> },
-      { path: "shoppingcart", element: <ShoppingCartPage /> },
-      { path: "/historial de compra", element: <PurchareHistory /> },
+      {
+        path: "shoppingcart",
+        element: <ShoppingCartPage />,
+      },
+      {
+        path: "historial",
+        element: (
+          <PrivateRoute>
+            <PurchareHistory />
+          </PrivateRoute>
+        ),
+      },
     ],
   },
+
   {
-    path: "/administrador",
-    element: <AdminLayout />,
+    path: "/admin/products",
+    element: (
+      <PrivateRoute allowedRoles={["ADMINISTRADOR"]}>
+        <AdminLayout />
+      </PrivateRoute>
+    ),
     children: [
       { index: true, element: <AdminProductsPage /> },
       { path: "productos", element: <AdminProductsPage /> },
@@ -44,7 +59,7 @@ export const router = createBrowserRouter([
   },
 
   {
-    path: "/auth", // ruta padre para login/registro sin Navbar
+    path: "/auth", // rutas de login/registro sin Navbar
     element: <AuthLayout />,
     children: [
       { path: "login", element: <LoginPage /> },

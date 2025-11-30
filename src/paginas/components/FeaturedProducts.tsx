@@ -9,33 +9,33 @@ const products = [
     id: 1,
     imageBase64: product1,
     name: "Hoodie Vibrante",
-    price: "$45.00",
+    price: "5000",
     category: "Sudaderas",
-    size: "L"
+    size: "L",
   },
   {
     id: 2,
     imageBase64: product2,
     name: "Chaqueta Denim Patches",
-    price: "$68.00",
+    price: "10000",
     category: "Chaquetas",
-    size: "L"
+    size: "L",
   },
   {
     id: 3,
     imageBase64: product3,
     name: "Sneakers Multicolor",
-    price: "$89.00",
+    price: "20000",
     category: "Calzado",
-    size: "L"
+    size: "L",
   },
   {
     id: 4,
     imageBase64: product4,
     name: "Camiseta Gradiente",
-    price: "$32.00",
+    price: "30000",
     category: "Camisetas",
-    size: "L"
+    size: "L",
   },
 ];
 
@@ -45,13 +45,11 @@ const FeaturedProducts = () => {
       <div className="container mx-auto px-4">
         <div className="text-center mb-12">
           <h2 className="text-4xl md:text-5xl font-bold mb-4">
-            Productos{""}
-            <span className="bg-gradient-to-r from-vibrant-pink via-vibrant-purple to-vibrant-orange bg-clip-text text-transparent">
-              Destacados
-            </span>
+            Productos Destacados
           </h2>
           <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-            Las piezas más populares de nuestra colección. Estilo único que refleja tu personalidad.
+            Las piezas más populares de nuestra colección. Estilo único que
+            refleja tu personalidad.
           </p>
         </div>
 
