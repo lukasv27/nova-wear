@@ -6,6 +6,7 @@ import {
 } from "@/api/service/ProductService";
 import ProductCard from "../../ProductCard";
 import type { Product } from "@/api/service/ProductService";
+
 export default function ProductsPage() {
   const { categoryName } = useParams<{ categoryName: string }>();
   const [products, setProducts] = useState<Product[]>([]);

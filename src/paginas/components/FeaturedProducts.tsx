@@ -1,62 +1,59 @@
+import { getPublicProducts, type Product } from "@/api/service/ProductService";
 import ProductCard from "./ProductCard";
-import product1 from "@/assets/product-1.jpg";
-import product2 from "@/assets/product-2.jpg";
-import product3 from "@/assets/product-3.jpg";
-import product4 from "@/assets/product-4.jpg";
 
-const products = [
-  {
-    id: 1,
-    imageBase64: product1,
-    name: "Hoodie Vibrante",
-    price: "5000",
-    category: "Sudaderas",
-    sizes: ["L"],
-  },
-  {
-    id: 2,
-    imageBase64: product2,
-    name: "Chaqueta Denim Patches",
-    price: "10000",
-    category: "Chaquetas",
-    sizes: ["L"],
-  },
-  {
-    id: 3,
-    imageBase64: product3,
-    name: "Sneakers Multicolor",
-    price: "20000",
-    category: "Calzado",
-    sizes: ["L"],
-  },
-  {
-    id: 4,
-    imageBase64: product4,
-    name: "Camiseta Gradiente",
-    price: "30000",
-    category: "Camisetas",
-    sizes: ["L"],
-  },
-];
+import { useEffect, useState } from "react";
 
 const FeaturedProducts = () => {
+  const [products, setProducts] = useState<Product[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchProducts = async () => {
+      setLoading(true);
+      try {
+        // todos los productos
+        const data = await getPublicProducts();
+        setProducts(data);
+      } catch (error) {
+        console.error("Error al cargar productos nuevos:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchProducts();
+  }, []);
+
+  if (loading) return <p className="p-10">Cargando productos nuevos...</p>;
+
   return (
     <section id="productos" className="py-20 bg-muted/30">
       <div className="container mx-auto px-4">
         <div className="text-center mb-12">
           <h2 className="text-4xl md:text-5xl font-bold mb-4">
-            Productos Destacados
+            Productos nuevos
           </h2>
           <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-            Las piezas más populares de nuestra colección. Estilo único que
+            Las mejores piezas estan en nuestra colección. Estilo único que
             refleja tu personalidad.
           </p>
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
-          {products.map((product) => (
-            <ProductCard key={product.id} {...product} />
-          ))}
+          {/* limita a 4 productos y los mas recientes */}
+          {[...products]
+            .sort((a, b) => b.id - a.id)
+            .slice(0, 4)
+            .map((p) => (
+              <ProductCard
+                key={p.id}
+                id={p.id}
+                imageBase64={p.imageBase64}
+                name={p.name}
+                price={p.price}
+                category={p.category}
+                sizes={p.sizes}
+              />
+            ))}
         </div>
       </div>
     </section>

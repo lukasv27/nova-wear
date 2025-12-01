@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Heart, ShoppingCart } from "lucide-react";
+import { ShoppingCart } from "lucide-react";
 import { toast } from "sonner";
 
 import { useCart } from "@/paginas/components/CartProvider";
@@ -24,7 +24,6 @@ const ProductCard = ({
   sizes = [],
 }: ProductCardProps) => {
   const [selectedSize, setSelectedSize] = useState(sizes[0] || "");
-  const [isFavorite, setIsFavorite] = useState(false);
 
   const { isAuthenticated } = useAuth();
   const { addToCart } = useCart();
@@ -72,9 +71,6 @@ const ProductCard = ({
       </select>
 
       <div className="flex justify-between items-center mt-auto">
-        <Button onClick={() => setIsFavorite(!isFavorite)} variant="ghost">
-          <Heart className={isFavorite ? "text-red-500" : "text-gray-400"} />
-        </Button>
         <Button
           onClick={handleAddToCart}
           disabled={!isAuthenticated()} // deshabilita si no hay sesión
