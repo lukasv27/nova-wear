@@ -5,16 +5,14 @@ import Footer from "../Footer";
 import { useAuth } from "@/hooks/useAuth";
 
 export default function PublicLayout() {
-  const { rol, isAuthenticated } = useAuth();
+  const { rol, token } = useAuth(); // obtenemos rol y token
+
+  const isAdmin = token && rol === "ADMINISTRADOR";
 
   return (
     <div className="min-h-screen flex flex-col">
-      {/* Navbar por defecto de cliente si no hay sesión */}
-      {isAuthenticated() && rol === "ADMINISTRADOR" ? (
-        <NavbarAdmin />
-      ) : (
-        <Navbar />
-      )}
+      {/* Mostrar navbar según rol y sesión */}
+      {isAdmin ? <NavbarAdmin /> : <Navbar />}
 
       <main className="flex-1">
         <Outlet />

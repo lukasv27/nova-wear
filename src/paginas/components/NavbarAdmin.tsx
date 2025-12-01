@@ -1,6 +1,6 @@
-import { ShoppingBag, Menu, Search, User, UserCog } from "lucide-react";
+import { ShoppingBag, User } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router";
 import {
   DropdownMenu,
@@ -10,16 +10,27 @@ import {
 } from "@/components/ui/dropdown-menu";
 
 import { useLogout } from "@/hooks/useAuth";
+import { toast } from "sonner";
 
 const NavbarAdmin = () => {
   const navigate = useNavigate();
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const handleLogout = useLogout();
+
+  // Estado local para token
+  const [token, setToken] = useState(localStorage.getItem("jwt"));
+
+  // Detecta cambios en localStorage desde otras pestañas
+  useEffect(() => {
+    const handleStorageChange = () => setToken(localStorage.getItem("jwt"));
+    window.addEventListener("storage", handleStorageChange);
+    return () => window.removeEventListener("storage", handleStorageChange);
+  }, []);
 
   return (
     <nav className="navbar-admin-color">
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-16">
+          {/* Logo */}
           <div className="flex items-center gap-2">
             <div className="text-2xl font-bold bg-gradient-to-r from-vibrant-pink via-vibrant-purple to-vibrant-orange bg-clip-text text-black">
               Nova Wear Store
@@ -30,7 +41,7 @@ const NavbarAdmin = () => {
           <div className="flex items-center gap-6">
             <Button
               variant="link"
-              className=" border-0 navbar-select"
+              className="border-0 navbar-select"
               onClick={() => navigate("/home")}
             >
               Inicio
@@ -38,7 +49,7 @@ const NavbarAdmin = () => {
 
             <Button
               variant="link"
-              className=" border-0 navbar-select"
+              className="border-0 navbar-select"
               onClick={() => navigate("/productos")}
             >
               Productos
@@ -46,7 +57,7 @@ const NavbarAdmin = () => {
 
             <Button
               variant="link"
-              className=" border-0 navbar-select"
+              className="border-0 navbar-select"
               onClick={() => navigate("/administrador")}
             >
               Administrador de productos
@@ -67,29 +78,33 @@ const NavbarAdmin = () => {
                 </Button>
               </DropdownMenuTrigger>
 
-              <DropdownMenuContent className="navbar-admin-color w-50 mr-3">
-                <DropdownMenuItem
-                  className="navbar-select"
-                  onClick={() => navigate("/registro")}
-                >
-                  Registro
-                </DropdownMenuItem>
+              <DropdownMenuContent
+                className=" navbar-select background-color w-48 border-2 border-black rounded-md shadow-lg mt-2 bg-white"
+                side="bottom"
+                align="center"
+                sideOffset={5}
+              >
+                {!token && (
+                  <DropdownMenuItem
+                    className="navbar-select"
+                    onClick={() => navigate("/login")}
+                  >
+                    Iniciar sesión
+                  </DropdownMenuItem>
+                )}
 
-                <div className="border-t border-black-300 my-1" />
-
-                <DropdownMenuItem
-                  className="navbar-select"
-                  onClick={() => navigate("/login")}
-                >
-                  Iniciar sesión
-                </DropdownMenuItem>
-                <div className="border-t border-black-300 my-1" />
-                <DropdownMenuItem
-                  className="navbar-select"
-                  onClick={handleLogout}
-                >
-                  Cerrar sesión
-                </DropdownMenuItem>
+                {token && (
+                  <DropdownMenuItem
+                    className="navbar-select"
+                    onClick={() => {
+                      handleLogout();
+                      toast.success("Sesión de administrador finalizada");
+                      navigate("/home");
+                    }}
+                  >
+                    Cerrar sesión
+                  </DropdownMenuItem>
+                )}
               </DropdownMenuContent>
             </DropdownMenu>
 

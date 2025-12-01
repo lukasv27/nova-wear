@@ -10,28 +10,26 @@ export function useLogout() {
   return () => {
     logout();
     clearCart();
-    navigate("/login", { replace: true });
+    navigate("/login", { replace: true }); // redirige al login
   };
 }
 
 export function useAuth() {
-  const [token, setToken] = useState<string | null>(null);
-  const [rol, setRol] = useState<string | null>(null);
-  const [email, setEmail] = useState<string | null>(null);
+  const [token, setToken] = useState<string | null>(
+    localStorage.getItem("jwt")
+  );
+  const [rol, setRol] = useState<string | null>(localStorage.getItem("rol"));
+  const [email, setEmail] = useState<string | null>(
+    localStorage.getItem("email")
+  );
 
-  useEffect(() => {
-    setToken(localStorage.getItem("jwt"));
-    setRol(localStorage.getItem("rol"));
-    setEmail(localStorage.getItem("email"));
-  }, []);
-
-  const login = (token: string, rol: string, email: string) => {
-    localStorage.setItem("jwt", token);
-    localStorage.setItem("rol", rol);
-    localStorage.setItem("email", email);
-    setToken(token);
-    setRol(rol);
-    setEmail(email);
+  const login = (newToken: string, newRol: string, newEmail: string) => {
+    localStorage.setItem("jwt", newToken);
+    localStorage.setItem("rol", newRol);
+    localStorage.setItem("email", newEmail);
+    setToken(newToken);
+    setRol(newRol);
+    setEmail(newEmail);
   };
 
   const logout = () => {
@@ -43,8 +41,8 @@ export function useAuth() {
     setEmail(null);
   };
 
-  // 👉 FUNCIÓN QUE TE FALTABA
-  const isAuthenticated = () => !!localStorage.getItem("jwt");
+  // ✅ Agregar isAuthenticated
+  const isAuthenticated = () => !!token;
 
   return { token, rol, email, login, logout, isAuthenticated };
 }

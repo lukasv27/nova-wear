@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { useCart } from "./CartProvider";
 import ThankYouMessage from "./ThankYouMessage";
+import { useNavigate } from "react-router";
 const formattedPrice = (price: number) =>
   new Intl.NumberFormat("es-CL", {
     style: "currency",
@@ -10,8 +11,10 @@ const formattedPrice = (price: number) =>
 
 export default function CartSummary() {
   const { total } = useCart();
+  const { clearCart } = useCart();
 
   const [showMessage, setShowMessage] = useState(false);
+  const navigate = useNavigate();
 
   const handlePurchase = () => {
     // Aquí luego conectarás el backend para guardar la compra
@@ -48,7 +51,16 @@ export default function CartSummary() {
         {/* BOTÓN QUE DISPARA LA ANIMACIÓN */}
         <Button
           className="w-full mb-3 add-cart-button"
-          onClick={handlePurchase}
+          onClick={() => {
+            handlePurchase();
+            clearCart();
+            setShowMessage(true); // mostrar mensaje
+            setTimeout(() => {
+              setShowMessage(false); // opcional: ocultar mensaje
+              navigate("/home"); // luego navegar
+              clearCart();
+            }, 2000); // 2 segundos de mensaje
+          }}
         >
           Proceder al pago
         </Button>
