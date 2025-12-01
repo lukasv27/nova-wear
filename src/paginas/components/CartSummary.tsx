@@ -53,7 +53,7 @@ export default function CartSummary() {
           className="w-full mb-3 add-cart-button"
           onClick={() => {
             handlePurchase();
-            clearCart();
+
             setShowMessage(true); // mostrar mensaje
             setTimeout(() => {
               setShowMessage(false); // opcional: ocultar mensaje

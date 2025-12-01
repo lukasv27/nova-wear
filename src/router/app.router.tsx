@@ -12,6 +12,7 @@ import PurchareHistory from "@/paginas/components/pages/purcharehistorypage/Purc
 import AddProductPage from "@/paginas/components/pages/addproductspage/AddProductsPage";
 
 import { createBrowserRouter } from "react-router";
+import LoginPage from "@/paginas/components/pages/login/LoginPage";
 
 export const router = createBrowserRouter([
   // RUTAS PÚBLICAS (Navbar cliente o admin según rol)
@@ -37,7 +38,7 @@ export const router = createBrowserRouter([
 
   // RUTAS DE AUTH (sin navbar)
   {
-    path: "/auth",
+    path: "/",
     element: <AuthLayout />,
     children: [
       { path: "login", element: <LoginForm /> },
