@@ -1,4 +1,3 @@
-// src/test/ShoppingCartPage.test.tsx
 import { render, screen } from "@testing-library/react";
 import { describe, expect, test, vi } from "vitest";
 import ShoppingCartPage from "@/paginas/components/pages/shoppingcart/ShoppingCartPage";
@@ -54,7 +53,5 @@ describe("ShoppingCartPage", () => {
 
     render(<ShoppingCartPage />);
     expect(screen.getByText("Zapatillas")).toBeInTheDocument();
-    // Ajusta este expect según el texto fijo que muestre tu CartSummary
-    // Ejemplo: expect(screen.getByText(/Resumen/i)).toBeInTheDocument();
   });
 });
