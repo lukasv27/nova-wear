@@ -1,3 +1,3 @@
 Integrantes: 
-Dario Salas
-Lukas Carecazuela
+Dario Salas, 
+Lukas Valenzuela
