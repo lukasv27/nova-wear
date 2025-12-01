@@ -1,6 +1,5 @@
 import { ShoppingBag, User } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useCart } from "./CartProvider";
 import { toast } from "sonner";
@@ -14,29 +13,18 @@ import {
 export default function Navbar() {
   const navigate = useNavigate();
   const { clearCart } = useCart();
-  const [refreshHistory, setRefreshHistory] = useState(false);
-  // Estado local para token
-  const [token, setToken] = useState(localStorage.getItem("jwt"));
 
-  // Función logout
+  // Leemos directamente el token en cada render
+  const token = localStorage.getItem("jwt");
+
   const handleLogout = () => {
     localStorage.removeItem("jwt");
     localStorage.removeItem("rol");
     localStorage.removeItem("email");
-
-    setToken(null); // ✅ fuerza re-render
     clearCart();
     toast.success("Sesión finalizada");
-    setRefreshHistory((prev) => !prev);
     navigate("/home", { replace: true });
   };
-
-  // Detecta cambios en localStorage desde otras pestañas
-  useEffect(() => {
-    const handleStorageChange = () => setToken(localStorage.getItem("jwt"));
-    window.addEventListener("storage", handleStorageChange);
-    return () => window.removeEventListener("storage", handleStorageChange);
-  }, []);
 
   return (
     <nav className="navbar-client">
@@ -58,7 +46,6 @@ export default function Navbar() {
             >
               Inicio
             </Button>
-
             <Button
               variant="link"
               className="drop-down-select border-0"
@@ -66,7 +53,6 @@ export default function Navbar() {
             >
               Productos
             </Button>
-
             <Button
               variant="link"
               className="drop-down-select border-0"
@@ -78,7 +64,7 @@ export default function Navbar() {
 
           {/* Actions */}
           <div className="flex items-center gap-4">
-            {/* Dropdown del usuario */}
+            {/* Dropdown usuario */}
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <Button
@@ -91,7 +77,7 @@ export default function Navbar() {
               </DropdownMenuTrigger>
 
               <DropdownMenuContent className="drop-down w-48 border-2 border-black rounded-md shadow-lg mt-2 bg-white z-50">
-                {!token && (
+                {!token ? (
                   <>
                     <DropdownMenuItem
                       className="drop-down-select"
@@ -99,7 +85,6 @@ export default function Navbar() {
                     >
                       Registro
                     </DropdownMenuItem>
-
                     <DropdownMenuItem
                       className="drop-down-select"
                       onClick={() => navigate("/login")}
@@ -107,9 +92,7 @@ export default function Navbar() {
                       Iniciar sesión
                     </DropdownMenuItem>
                   </>
-                )}
-
-                {token && (
+                ) : (
                   <DropdownMenuItem
                     className="drop-down-select"
                     onClick={handleLogout}
