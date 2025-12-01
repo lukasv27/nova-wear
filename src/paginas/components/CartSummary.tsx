@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { useCart } from "./CartProvider";
 import ThankYouMessage from "./ThankYouMessage";
 import { useNavigate } from "react-router";
+
 const formattedPrice = (price: number) =>
   new Intl.NumberFormat("es-CL", {
     style: "currency",
@@ -10,20 +11,34 @@ const formattedPrice = (price: number) =>
   }).format(price);
 
 export default function CartSummary() {
-  const { total } = useCart();
-  const { clearCart } = useCart();
-
+  const { cart, total, clearCart } = useCart();
   const [showMessage, setShowMessage] = useState(false);
   const navigate = useNavigate();
 
   const handlePurchase = () => {
-    // Aquí luego conectarás el backend para guardar la compra
-    console.log("Compra realizada!");
+    if (cart.length === 0) return;
+
+    // Obtener el email del usuario actual
+    const userEmail = localStorage.getItem("email");
+    if (!userEmail) return;
+
+    // Guardar historial por usuario
+    const storageKey = `purchaseHistory_${userEmail}`;
+    const previousHistory = JSON.parse(
+      localStorage.getItem(storageKey) || "[]"
+    );
+    localStorage.setItem(
+      storageKey,
+      JSON.stringify([...previousHistory, ...cart])
+    );
 
     setShowMessage(true);
 
-    // Si quieres que se cierre solo:
-    setTimeout(() => setShowMessage(false), 3000);
+    setTimeout(() => {
+      setShowMessage(false);
+      clearCart(); // Limpiar carrito después de guardar historial
+      navigate("/home");
+    }, 2000);
   };
 
   return (
@@ -48,24 +63,13 @@ export default function CartSummary() {
           <span>{formattedPrice(total)}</span>
         </div>
 
-        {/* BOTÓN QUE DISPARA LA ANIMACIÓN */}
         <Button
           className="w-full mb-3 add-cart-button"
-          onClick={() => {
-            handlePurchase();
-
-            setShowMessage(true); // mostrar mensaje
-            setTimeout(() => {
-              setShowMessage(false); // opcional: ocultar mensaje
-              navigate("/home"); // luego navegar
-              clearCart();
-            }, 2000); // 2 segundos de mensaje
-          }}
+          onClick={handlePurchase}
         >
           Proceder al pago
         </Button>
 
-        {/* MENSAJE ANIMADO */}
         {showMessage && (
           <ThankYouMessage onClose={() => setShowMessage(false)} />
         )}
@@ -73,7 +77,7 @@ export default function CartSummary() {
         <Button
           variant="outline"
           className="w-full add-cart-button"
-          onClick={() => (window.location.href = "/productos")}
+          onClick={() => navigate("/productos")}
         >
           Continuar comprando
         </Button>

@@ -13,6 +13,7 @@ import type { RegistroDTO } from "@/api/types";
 import { registro } from "@/api/service/AuthService";
 import { toast } from "sonner";
 import { useState } from "react";
+import { useNavigate } from "react-router";
 
 export const UserRegister = () => {
   const form = useForm<RegistroDTO>({
@@ -23,7 +24,7 @@ export const UserRegister = () => {
       password: "",
     },
   });
-
+  const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
 
   const onSubmit = async (data: RegistroDTO) => {
@@ -32,6 +33,8 @@ export const UserRegister = () => {
       const persona = await registro(data);
       toast.success(`Usuario registrado: ${persona.email}`);
       form.reset(); // opcional: limpia el formulario
+      navigate("/login");
+      toast.success("Ingrese sus credenciales para ingresar");
     } catch (error) {
       if (error instanceof Error) {
         toast.error(error.message);

@@ -1,7 +1,15 @@
-.navbar-client{
-    background-color: rgb(166, 136, 170);
-    color: black;
+.navbar-client {
+  background-color: rgb(166, 136, 170);
+  color: black;
 }
-.icon_navbar{
-    border-color: black;
+.icon_navbar {
+  border-color: black;
+}
+
+.botton-tienda {
+  background-color: rgb(166, 136, 170);
+}
+.botton-tienda-h:hover {
+  cursor: pointer;
+  background-color: rgb(176, 104, 186);
 }

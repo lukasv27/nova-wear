@@ -1,7 +1,7 @@
 import { Outlet } from "react-router-dom";
 import Navbar from "../NavBar";
 import NavbarAdmin from "../NavbarAdmin";
-import Footer from "../Footer";
+import Footer from "../footer";
 import { useAuth } from "@/hooks/useAuth";
 
 export default function PublicLayout() {

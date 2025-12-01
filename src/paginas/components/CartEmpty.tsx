@@ -12,7 +12,7 @@ const GoToStoreButton = () => {
 
   return (
     <Button
-      className="text-white drop-down-select"
+      className="text-white navbar-select"
       style={{ backgroundColor }}
       onClick={() => (window.location.href = "/productos")}
     >

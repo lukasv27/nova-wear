@@ -14,7 +14,7 @@ import {
 export default function Navbar() {
   const navigate = useNavigate();
   const { clearCart } = useCart();
-
+  const [refreshHistory, setRefreshHistory] = useState(false);
   // Estado local para token
   const [token, setToken] = useState(localStorage.getItem("jwt"));
 
@@ -23,9 +23,11 @@ export default function Navbar() {
     localStorage.removeItem("jwt");
     localStorage.removeItem("rol");
     localStorage.removeItem("email");
+
     setToken(null); // ✅ fuerza re-render
     clearCart();
     toast.success("Sesión finalizada");
+    setRefreshHistory((prev) => !prev);
     navigate("/home", { replace: true });
   };
 

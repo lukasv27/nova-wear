@@ -1,6 +1,26 @@
-import { useMemo, useState, useEffect, useContext } from "react";
-import { CartContext } from "@/hooks/useCartContext";
-import type { CartItem } from "@/hooks/useCartContext";
+import { useMemo, useState, useEffect, useContext, createContext } from "react";
+
+export interface CartItem {
+  productId: number;
+  name: string;
+  price: number | string;
+  size: string;
+  quantity: number;
+  imageBase64?: string;
+}
+
+interface CartContextType {
+  cart: CartItem[];
+  addToCart: (item: CartItem) => void;
+  removeFromCart: (productId: number, size: string) => void;
+  updateQuantity: (productId: number, size: string, qty: number) => void;
+  clearCart: () => void;
+  total: number;
+}
+
+export const CartContext = createContext<CartContextType | undefined>(
+  undefined
+);
 
 interface Props {
   children: React.ReactNode;
@@ -9,23 +29,29 @@ interface Props {
 export const CartProvider = ({ children }: Props) => {
   const [cart, setCart] = useState<CartItem[]>([]);
 
-  // Agregar al carrito
-  const addToCart = (item: CartItem) => {
-    const exitingIndex = cart.findIndex(
-      (element) =>
-        element.productId === item.productId && element.size === item.size
-    );
+  // Cargar carrito de localStorage
+  useEffect(() => {
+    const savedCart = localStorage.getItem("cart");
+    if (savedCart) setCart(JSON.parse(savedCart));
+  }, []);
 
-    if (exitingIndex === -1) {
-      setCart((items) => [...items, item]);
-    } else {
-      const updateCart = [...cart];
-      updateCart[exitingIndex].quantity += item.quantity;
-      setCart(updateCart);
+  // Guardar carrito en localStorage
+  useEffect(() => {
+    localStorage.setItem("cart", JSON.stringify(cart));
+  }, [cart]);
+
+  const addToCart = (item: CartItem) => {
+    const index = cart.findIndex(
+      (el) => el.productId === item.productId && el.size === item.size
+    );
+    if (index === -1) setCart((prev) => [...prev, item]);
+    else {
+      const updated = [...cart];
+      updated[index].quantity += item.quantity;
+      setCart(updated);
     }
   };
 
-  // Eliminar del carrito
   const removeFromCart = (productId: number, size: string) => {
     setCart((prev) =>
       prev.filter(
@@ -34,7 +60,6 @@ export const CartProvider = ({ children }: Props) => {
     );
   };
 
-  // Actualizar cantidad
   const updateQuantity = (productId: number, size: string, qty: number) => {
     if (qty < 1) return;
     setCart((prev) =>
@@ -46,33 +71,20 @@ export const CartProvider = ({ children }: Props) => {
     );
   };
 
-  // Vaciar carrito
   const clearCart = () => setCart([]);
 
-  // Total del carrito
   const total = cart.reduce(
     (sum, item) => sum + Number(item.price) * item.quantity,
     0
   );
 
-  // Guardar en localStorage
-  useEffect(() => {
-    const savedCart = localStorage.getItem("cart");
-    if (savedCart) setCart(JSON.parse(savedCart));
-  }, []);
-
-  useEffect(() => {
-    localStorage.setItem("cart", JSON.stringify(cart));
-  }, [cart]);
-
-  // Memoizar el value
   const value = useMemo(
     () => ({
-      clearCart,
       cart,
       addToCart,
       removeFromCart,
       updateQuantity,
+      clearCart,
       total,
     }),
     [cart, total]

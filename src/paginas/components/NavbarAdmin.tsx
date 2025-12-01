@@ -16,15 +16,21 @@ const NavbarAdmin = () => {
   const navigate = useNavigate();
   const handleLogout = useLogout();
 
-  // Estado local para token
   const [token, setToken] = useState(localStorage.getItem("jwt"));
 
-  // Detecta cambios en localStorage desde otras pestañas
+  // Detectar cambios en otras pestañas
   useEffect(() => {
     const handleStorageChange = () => setToken(localStorage.getItem("jwt"));
     window.addEventListener("storage", handleStorageChange);
     return () => window.removeEventListener("storage", handleStorageChange);
   }, []);
+
+  const onLogoutClick = () => {
+    handleLogout(); // Limpiar token, carrito, historial, etc.
+    setToken(null); // Fuerza re-render
+    toast.success("Sesión de administrador finalizada");
+    navigate("/home", { replace: true }); // Ir al home
+  };
 
   return (
     <nav className="navbar-admin-color">
@@ -37,7 +43,7 @@ const NavbarAdmin = () => {
             </div>
           </div>
 
-          {/* Desktop Navigation */}
+          {/* Navegación */}
           <div className="flex items-center gap-6">
             <Button
               variant="link"
@@ -46,7 +52,6 @@ const NavbarAdmin = () => {
             >
               Inicio
             </Button>
-
             <Button
               variant="link"
               className="border-0 navbar-select"
@@ -54,7 +59,6 @@ const NavbarAdmin = () => {
             >
               Productos
             </Button>
-
             <Button
               variant="link"
               className="border-0 navbar-select"
@@ -64,9 +68,8 @@ const NavbarAdmin = () => {
             </Button>
           </div>
 
-          {/* Actions */}
+          {/* Acciones */}
           <div className="flex items-center gap-4">
-            {/* Dropdown del usuario */}
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <Button
@@ -79,28 +82,22 @@ const NavbarAdmin = () => {
               </DropdownMenuTrigger>
 
               <DropdownMenuContent
-                className=" navbar-select background-color w-48 border-2 border-black rounded-md shadow-lg mt-2 bg-white"
+                className="navbar-select background-color w-48 border-2 border-black rounded-md shadow-lg mt-2 bg-white"
                 side="bottom"
                 align="center"
                 sideOffset={5}
               >
-                {!token && (
+                {!token ? (
                   <DropdownMenuItem
                     className="navbar-select"
                     onClick={() => navigate("/login")}
                   >
                     Iniciar sesión
                   </DropdownMenuItem>
-                )}
-
-                {token && (
+                ) : (
                   <DropdownMenuItem
                     className="navbar-select"
-                    onClick={() => {
-                      handleLogout();
-                      toast.success("Sesión de administrador finalizada");
-                      navigate("/home");
-                    }}
+                    onClick={onLogoutClick}
                   >
                     Cerrar sesión
                   </DropdownMenuItem>
@@ -108,7 +105,6 @@ const NavbarAdmin = () => {
               </DropdownMenuContent>
             </DropdownMenu>
 
-            {/* Carrito */}
             <Button
               className="icon_navbar navbar-select"
               variant="ghost"
