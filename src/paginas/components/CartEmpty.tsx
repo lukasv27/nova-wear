@@ -12,7 +12,7 @@ const GoToStoreButton = () => {
 
   return (
     <Button
-      className="text-white navbar-select"
+      className="text-white drop-down-select"
       style={{ backgroundColor }}
       onClick={() => (window.location.href = "/productos")}
     >
@@ -29,17 +29,8 @@ export default function CartEmpty() {
       <p className="text-gray-500 mb-6">
         Agrega productos para comenzar tu compra
       </p>
-<<<<<<< HEAD
-      <Button
-        className="drop-down-select"
-        onClick={() => (window.location.href = "/productos")}
-      >
-        Ir a la tienda
-      </Button>
-=======
 
       <GoToStoreButton />
->>>>>>> 0b2db75 (se corrigio el dropdown de navbar cliente y admin)
     </div>
   );
 }
