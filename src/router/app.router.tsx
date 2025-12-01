@@ -12,9 +12,10 @@ import PurchareHistory from "@/paginas/components/pages/purcharehistorypage/Purc
 import AddProductPage from "@/paginas/components/pages/addproductspage/AddProductsPage";
 
 import { createBrowserRouter } from "react-router";
+import LoginPage from "@/paginas/components/pages/login/LoginPage";
 
 export const router = createBrowserRouter([
-  // Rutas públicas
+  // RUTAS PÚBLICAS (Navbar cliente o admin según rol)
   {
     path: "/",
     element: <PublicLayout />,
@@ -28,14 +29,14 @@ export const router = createBrowserRouter([
     ],
   },
 
-  // Rutas de admin (sin roles)
+  // RUTAS ADMIN (solo admin, navbar admin)
   {
     path: "/administrador",
     element: <AdminLayout />,
     children: [{ index: true, element: <AddProductPage /> }],
   },
 
-  // Rutas de auth sin navbar
+  // RUTAS DE AUTH (sin navbar)
   {
     path: "/",
     element: <AuthLayout />,

@@ -1,6 +1,26 @@
 import { Button } from "@/components/ui/button";
 import { ShoppingBag } from "lucide-react";
-//carro vacio
+import { useAuth } from "@/hooks/useAuth";
+
+const GoToStoreButton = () => {
+  const { rol, token } = useAuth();
+
+  const backgroundColor =
+    rol === "ADMINISTRADOR" && token
+      ? "rgba(72, 167, 170, 1)"
+      : "rgb(166, 136, 170)";
+
+  return (
+    <Button
+      className="text-white drop-down-select"
+      style={{ backgroundColor }}
+      onClick={() => (window.location.href = "/productos")}
+    >
+      Ir a la tienda
+    </Button>
+  );
+};
+
 export default function CartEmpty() {
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col items-center justify-center">
@@ -9,12 +29,8 @@ export default function CartEmpty() {
       <p className="text-gray-500 mb-6">
         Agrega productos para comenzar tu compra
       </p>
-      <Button
-        className="drop-down-select"
-        onClick={() => (window.location.href = "/productos")}
-      >
-        Ir a la tienda
-      </Button>
+
+      <GoToStoreButton />
     </div>
   );
 }
