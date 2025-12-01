@@ -10,13 +10,14 @@ import {
   DropdownMenuItem,
 } from "@/components/ui/dropdown-menu";
 
-import { useLogout } from "@/hooks/useAuth";
+import { useAuth, useLogout } from "@/hooks/useAuth";
+import { toast } from "sonner";
 
 export default function Navbar() {
   const handleLogout = useLogout();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const navigate = useNavigate();
-
+  const { token } = useAuth();
   return (
     <nav className="navbar-client">
       <div className="container mx-auto px-4">
@@ -72,17 +73,29 @@ export default function Navbar() {
               <DropdownMenuContent className="drop-down w-48 mr-3 absolute z-50">
                 <DropdownMenuItem
                   className="drop-down-select"
-                  onClick={() => navigate("/login")}
+                  onClick={() => navigate("/registro")}
                 >
-                  Iniciar sesión
+                  Registro
                 </DropdownMenuItem>
 
                 <DropdownMenuItem
                   className="drop-down-select"
-                  onClick={handleLogout}
+                  onClick={() => navigate("/login")}
                 >
-                  Cerrar sesión
+                  Iniciar sesión
                 </DropdownMenuItem>
+                {localStorage.getItem("jwt") && (
+                  <DropdownMenuItem
+                    className="drop-down-select"
+                    onClick={() => {
+                      handleLogout();
+                      toast.success("Sesion finalizada");
+                      navigate("/home");
+                    }}
+                  >
+                    Cerrar sesión
+                  </DropdownMenuItem>
+                )}
               </DropdownMenuContent>
             </DropdownMenu>
 

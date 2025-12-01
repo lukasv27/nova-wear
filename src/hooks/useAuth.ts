@@ -10,7 +10,7 @@ export function useLogout() {
   return () => {
     logout();
     clearCart();
-    navigate("/login", { replace: true }); // redirige al login
+    navigate("/login", { replace: true });
   };
 }
 
@@ -43,5 +43,8 @@ export function useAuth() {
     setEmail(null);
   };
 
-  return { token, rol, email, login, logout };
+  // 👉 FUNCIÓN QUE TE FALTABA
+  const isAuthenticated = () => !!localStorage.getItem("jwt");
+
+  return { token, rol, email, login, logout, isAuthenticated };
 }

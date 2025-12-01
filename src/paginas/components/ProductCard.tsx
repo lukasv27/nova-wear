@@ -24,16 +24,15 @@ const ProductCard = ({
   sizes = [],
 }: ProductCardProps) => {
   const [selectedSize, setSelectedSize] = useState(sizes[0] || "");
-
   const [isFavorite, setIsFavorite] = useState(false);
 
+  const { isAuthenticated } = useAuth();
   const { addToCart } = useCart();
-  const { token } = useAuth(); // ✅ verificamos si hay sesión
 
   const handleAddToCart = () => {
-    if (!token) {
+    if (!isAuthenticated()) {
       toast.error("Debes iniciar sesión para agregar productos al carrito");
-      return; // no permite agregar si no hay sesión
+      return;
     }
 
     addToCart({
@@ -78,10 +77,13 @@ const ProductCard = ({
         </Button>
         <Button
           onClick={handleAddToCart}
-          className="add-cart-button flex items-center gap-2 border-black"
+          disabled={!isAuthenticated()} // deshabilita si no hay sesión
+          className={`add-cart-button flex items-center gap-2 border-black ${
+            !isAuthenticated() ? "opacity-50 cursor-not-allowed" : ""
+          }`}
         >
           <ShoppingCart />
-          Agregar
+          {isAuthenticated() ? "Agregar" : "Inicia sesión para agregar"}
         </Button>
       </div>
     </div>

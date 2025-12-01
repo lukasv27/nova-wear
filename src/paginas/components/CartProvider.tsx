@@ -11,22 +11,17 @@ export const CartProvider = ({ children }: Props) => {
 
   // Agregar al carrito
   const addToCart = (item: CartItem) => {
-    let isElementInCart = false;
-    cart.forEach((element) => {
-      if (element.productId === item.productId) {
-        isElementInCart = true;
-      }
-    });
+    const exitingIndex = cart.findIndex(
+      (element) =>
+        element.productId === item.productId && element.size === item.size
+    );
 
-    if (!isElementInCart) {
+    if (exitingIndex === -1) {
       setCart((items) => [...items, item]);
     } else {
-      cart.forEach((element) => {
-        if (element.productId === item.productId) {
-          element.quantity += item.quantity;
-        }
-      });
-      setCart((items) => [...items]);
+      const updateCart = [...cart];
+      updateCart[exitingIndex].quantity += item.quantity;
+      setCart(updateCart);
     }
   };
 

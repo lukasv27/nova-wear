@@ -11,7 +11,7 @@ const products = [
     name: "Hoodie Vibrante",
     price: "5000",
     category: "Sudaderas",
-    size: "L",
+    sizes: ["L"],
   },
   {
     id: 2,
@@ -19,7 +19,7 @@ const products = [
     name: "Chaqueta Denim Patches",
     price: "10000",
     category: "Chaquetas",
-    size: "L",
+    sizes: ["L"],
   },
   {
     id: 3,
@@ -27,7 +27,7 @@ const products = [
     name: "Sneakers Multicolor",
     price: "20000",
     category: "Calzado",
-    size: "L",
+    sizes: ["L"],
   },
   {
     id: 4,
@@ -35,7 +35,7 @@ const products = [
     name: "Camiseta Gradiente",
     price: "30000",
     category: "Camisetas",
-    size: "L",
+    sizes: ["L"],
   },
 ];
 
