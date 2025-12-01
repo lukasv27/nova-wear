@@ -73,7 +73,6 @@ const ProductCard = ({
       <div className="flex justify-between items-center mt-auto">
         <Button
           onClick={handleAddToCart}
-          disabled={!isAuthenticated()} // deshabilita si no hay sesión
           className={`add-cart-button flex items-center gap-2 border-black ${
             !isAuthenticated() ? "opacity-50 cursor-not-allowed" : ""
           }`}
