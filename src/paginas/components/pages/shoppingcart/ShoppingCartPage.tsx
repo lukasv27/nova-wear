@@ -1,9 +1,12 @@
 import Navbar from "../../NavBar";
 import { useCart } from "../../CartProvider";
-import CartItems from "../../CartItems";
+
 import CartSummary from "../../CartSummary";
-import CartEmpty from "../../CartEmpty";
+
 import { Outlet } from "react-router";
+
+import CartItems from "@/paginas/components/CartItems";
+import CartEmpty from "@/paginas/components/CartEmpty";
 
 const ShoppingCartPage = () => {
   const { cart } = useCart();
