@@ -1,6 +1,7 @@
 import { createRoot } from "react-dom/client";
 import { CartProvider } from "./paginas/components/CartProvider";
 import "./index.css";
+import "./styles/animationsFooter.css";
 
 // ✅ Importación default, no 'type'
 import WebApp from "./router/WebApp";

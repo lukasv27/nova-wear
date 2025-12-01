@@ -1,0 +1,22 @@
+/* animations.css */
+
+.hover-grow {
+  transition: transform 0.3s ease;
+}
+.hover-grow:hover {
+  transform: scale(1.1);
+}
+
+.hover-slide {
+  transition: transform 0.3s ease, color 0.3s ease;
+}
+.hover-slide:hover {
+  transform: translateX(8px);
+}
+
+.hover-fade {
+  transition: opacity 0.3s ease;
+}
+.hover-fade:hover {
+  opacity: 0.8;
+}
