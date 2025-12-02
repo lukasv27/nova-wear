@@ -20,9 +20,18 @@ const NavbarAdmin = () => {
 
   // Detectar cambios en otras pestañas
   useEffect(() => {
-    const handleStorageChange = () => setToken(localStorage.getItem("jwt"));
-    window.addEventListener("storage", handleStorageChange);
-    return () => window.removeEventListener("storage", handleStorageChange);
+    const updateToken = () => setToken(localStorage.getItem("jwt"));
+
+    // Cambios desde otras pestañas
+    window.addEventListener("storage", updateToken);
+
+    // Cambios desde esta pestaña (logout/login)
+    window.addEventListener("auth-change", updateToken);
+
+    return () => {
+      window.removeEventListener("storage", updateToken);
+      window.removeEventListener("auth-change", updateToken);
+    };
   }, []);
 
   const onLogoutClick = () => {

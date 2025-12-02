@@ -10,6 +10,6 @@ export const useLogout = () => {
     localStorage.removeItem("email");
     localStorage.removeItem("purchaseHistory");
     // Esto fuerza a App a re-renderizar y mostrar el Navbar correcto
-    window.dispatchEvent(new Event("storage"));
+    window.dispatchEvent(new Event("auth-change"));
   };
 };
