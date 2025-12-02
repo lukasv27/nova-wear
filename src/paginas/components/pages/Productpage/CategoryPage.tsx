@@ -4,6 +4,7 @@ import {
   getPublicProductsByCategory,
   getAllProducts,
   type Product,
+  getPublicProducts,
 } from "@/api/service/ProductService";
 import ProductCard from "@/paginas/components/ProductCard";
 
@@ -30,6 +31,7 @@ export default function CategoryPage({ isAdmin = false }: Props) {
 
         if (isAdmin) {
           res = await getAllProducts();
+
           if (selectedCategory !== "Todos") {
             res = res.filter(
               (p) => p.category.toLowerCase() === selectedCategory.toLowerCase()
@@ -37,7 +39,7 @@ export default function CategoryPage({ isAdmin = false }: Props) {
           }
         } else {
           if (selectedCategory === "Todos") {
-            res = await getAllProducts(); // o getPublicProductsByCategory("") según tu API
+            res = await getPublicProducts(); // ← ESTE ES EL CORRECTO
           } else {
             res = await getPublicProductsByCategory(selectedCategory);
           }
